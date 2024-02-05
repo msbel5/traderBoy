@@ -1,5 +1,5 @@
 import requests
-import indicators
+import indicatorsOld
 import pandas as pd
 from binance.spot import Spot
 
@@ -39,8 +39,8 @@ def fetch_portfolio_data_binance_with_indicators(symbols, interval='1d', limit=3
         df.columns = [f"{symbol}_{col}" for col in df.columns]
 
         # Apply indicators
-        df = indicators.calculate_rsi(df, [symbol])
-        df = indicators.calculate_macd(df, [symbol])
+        df = indicatorsOld.calculate_rsi(df, [symbol])
+        df = indicatorsOld.calculate_macd(df, [symbol])
         # Add more indicators as needed
 
         full_data[symbol] = df.to_dict(orient='records') # Convert DataFrame to dict

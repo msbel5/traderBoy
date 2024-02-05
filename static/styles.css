@@ -1,0 +1,57 @@
+/* Basic styling for the dashboard */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Styling for the chart area */
+.chart-area {
+    padding: 15px;
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Accordion button styling */
+.accordion-button {
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    transition: 0.4s;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+/* Accordion button hover effect */
+.accordion-button:hover, .accordion-button.active {
+    background-color: #0056b3;
+}
+
+/* Accordion content panel styling */
+.accordion-panel {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+/* Chart canvas styling */
+.chart-canvas {
+    width: 100%;
+    min-height: 300px;
+}
+
+/* Responsive layout for chart containers */
+@media (min-width: 768px) {
+    .chart-grid-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
