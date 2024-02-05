@@ -1,18 +1,14 @@
+import mplfinance as mpf  # Make sure you have this import
 import numpy as np
 import pandas as pd
-import pandas as pd
-import numpy as np
-from scipy.signal import find_peaks
-from scipy.stats import linregress
-from numpy import log, polyfit, sqrt, std, subtract
-import matplotlib.pyplot as plt
-from scipy.signal import hilbert, argrelextrema
-from statsmodels.tsa.arima.model import ARIMA
-from scipy.stats import norm
 import talib
 from arch import arch_model
-import mplfinance as mpf  # Make sure you have this import
-
+from numpy import log, polyfit, sqrt, std, subtract
+from scipy.signal import find_peaks
+from scipy.signal import hilbert, argrelextrema
+from scipy.stats import linregress
+from scipy.stats import norm
+from statsmodels.tsa.arima.model import ARIMA
 
 
 def calculate_value_at_risk(df, data_col, confidence_level=0.95, time_horizon=1):
@@ -199,7 +195,8 @@ def calculate_parabolic_sar(df, symbols, start=0.02, increment=0.02, maximum=0.2
             prev_i = df.index[df.index.get_loc(i) - 1]
 
             if long:
-                df.at[i, sar_col] = min(df.at[prev_i, sar_col] + af * (ep - df.at[prev_i, sar_col]), df.at[prev_i, low_col], df.at[i, low_col])
+                df.at[i, sar_col] = min(df.at[prev_i, sar_col] + af * (ep - df.at[prev_i, sar_col]),
+                                        df.at[prev_i, low_col], df.at[i, low_col])
                 if df.at[i, high_col] > ep:
                     ep = df.at[i, high_col]
                     af = min(af + increment, maximum)
@@ -209,7 +206,8 @@ def calculate_parabolic_sar(df, symbols, start=0.02, increment=0.02, maximum=0.2
                     ep = df.at[i, low_col]
                     df.at[i, sar_col] = ep
             else:
-                df.at[i, sar_col] = max(df.at[prev_i, sar_col] + af * (ep - df.at[prev_i, sar_col]), df.at[prev_i, high_col], df.at[i, high_col])
+                df.at[i, sar_col] = max(df.at[prev_i, sar_col] + af * (ep - df.at[prev_i, sar_col]),
+                                        df.at[prev_i, high_col], df.at[i, high_col])
                 if df.at[i, low_col] < ep:
                     ep = df.at[i, low_col]
                     af = min(af + increment, maximum)
@@ -244,9 +242,9 @@ def test_calculate_parabolic_sar():
 
     print("Test passed successfully.")
 
+
 # Run the test
 test_calculate_parabolic_sar()
-
 
 
 def calculate_ichimoku_cloud(df, symbols):
@@ -1763,7 +1761,6 @@ def calculate_heikin_ashi(df, symbols):
     return df
 
 
-
 def calculate_arms_index(df, adv_issues_col, dec_issues_col, adv_volume_col, dec_volume_col):
     """
     Calculate Arms Index (TRIN).
@@ -2162,7 +2159,6 @@ def calculate_garch_model_summary(df, data_col):
     return df  # Return the DataFrame with added GARCH model parameters
 
 
-
 def test_calculate_garch_model_summary():
     test_data = {
         'data_series': np.random.rand(500)  # Random data for testing
@@ -2179,7 +2175,6 @@ def test_calculate_garch_model_summary():
     assert not test_df['data_series_garch_alpha'].isna().all(), "GARCH alpha values are all NaN"
     assert not test_df['data_series_garch_beta'].isna().all(), "GARCH beta values are all NaN"
     assert not test_df['data_series_garch_omega'].isna().all(), "GARCH omega values are all NaN"
-
 
 
 # Run the test

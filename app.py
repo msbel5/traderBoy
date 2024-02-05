@@ -15,7 +15,7 @@ import numpy as np
 app = Flask(__name__)
 
 
-def fetch_binance_data(symbol, interval='1d', limit=500):
+def fetch_binance_data(symbol, interval='1d', limit=5000):
     try:
         client = Spot()
         klines = client.klines(symbol, interval, limit=limit)
@@ -41,7 +41,7 @@ def fetch_binance_data(symbol, interval='1d', limit=500):
         return None  # Or handle the exception as needed
 
 
-def create_indicators_for_symbol(symbol, interval='1d', limit=500):
+def create_indicators_for_symbol(symbol, interval='1d', limit=5000):
     df = fetch_binance_data(symbol, interval, limit)
     df.columns = [f"{symbol}_{col}" for col in df.columns]
 
@@ -58,7 +58,6 @@ def create_indicators_for_symbol(symbol, interval='1d', limit=500):
     df = indicators.calculate_linear_regression_channels(df, [symbol])
     df = indicators.calculate_sma(df, [symbol])
     df = indicators.calculate_mama(df, [symbol])
-    # df = indicators.calculate_garch_model_summary(df, f'{symbol}_close')
     df = indicators.calculate_parabolic_sar(df, [symbol])
     df = indicators.calculate_volume_oscillator(df, [symbol])
     df = indicators.calculate_cci(df, [symbol])
@@ -81,13 +80,8 @@ def create_indicators_for_symbol(symbol, interval='1d', limit=500):
     df = indicators.calculate_high_low_index(df, f'{symbol}_high', f'{symbol}_low')
     df = indicators.calculate_price_channels(df, [symbol])
     df = indicators.identify_candlestick_patterns(df, [symbol])
-    # df = indicators.calculate_renko_bricks(df, [symbol])
     df = indicators.calculate_heikin_ashi(df, [symbol])
     df = indicators.calculate_sma(df, [symbol])
-    # df = indicators.calculate_arms_index(df, f'{symbol}_advances', f'{symbol}_declines', f'{symbol}_volume')
-    # df = indicators.calculate_frama(df, [symbol])
-    # df = indicators.calculate_vidya(df, [symbol])
-    # df = indicators.calculate_kama(df, [symbol])
     df = indicators.calculate_stc(df, [symbol])
     df = indicators.calculate_cycle_identifier(df, [symbol])
     df = indicators.calculate_detrended_price_oscillator(df, [symbol])
@@ -98,6 +92,13 @@ def create_indicators_for_symbol(symbol, interval='1d', limit=500):
     # df = indicators.calculate_arima_model_summary(df, f'{symbol}_close')  # Note: ARIMA might return a model summary, not a column
     # df = indicators.calculate_sharpe_ratio(df, f'{symbol}_return')  # Requires return column
     # df = indicators.calculate_sortino_ratio(df, f'{symbol}_return')  # Requires return column
+    # df = indicators.calculate_garch_model_summary(df, f'{symbol}_close')
+    # df = indicators.calculate_arms_index(df, f'{symbol}_advances', f'{symbol}_declines', f'{symbol}_volume')
+    # df = indicators.calculate_frama(df, [symbol])
+    # df = indicators.calculate_vidya(df, [symbol])
+    # df = indicators.calculate_kama(df, [symbol])
+    # df = indicators.calculate_renko_bricks(df, [symbol])
+
 
     expected_indicators = ['rsi', 'macd', 'bollinger_bands', 'ichimoku_cloud',
                            'average_true_range', 'stochastic_oscillator', 'williams_r',
@@ -245,14 +246,14 @@ processed_data = {}
 # Start the background thread
 symbols = ['BTCUSDT', 'ETHUSDT', 'MATICUSDT', 'SOLUSDT']
 interval = '1d'  # Binance data interval
-limit = 500  # Number of data points
+limit = 5000  # Number of data points
 fetch_interval = 60  # Fetch data every 5 seconds
 background_thread = threading.Thread(target=background_data_fetch, args=(symbols, interval, limit, fetch_interval))
 background_thread.daemon = True
 background_thread.start()
 
 
-def fetch_portfolio_data_binance_with_indicators(symbols, interval='1d', limit=500):
+def fetch_portfolio_data_binance_with_indicators(symbols, interval='1d', limit=5000):
     full_data = {}
     for symbol in symbols:
         # Create indicators for each symbol
